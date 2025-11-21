@@ -44,12 +44,15 @@ python cota.py
 
 ### 2. `balance.py` - Balance Hídrico
 
-Genera gráficos de barras para el balance hídrico mensual de cada zona.
+Genera gráficos de barras para el balance hídrico mensual de cada zona, además de análisis comparativos entre todas las zonas.
 
 **Qué hace:**
 - Visualiza las entradas y salidas de agua (Step In, Step Out, Step Rate)
 - Compara datos históricos de MODFLOW con pronósticos del metamodelo
-- Crea gráficos individuales por variable y gráficos combinados
+- Crea gráficos individuales por variable y gráficos combinados por zona
+- **NUEVO:** Genera gráficos comparativos entre todas las zonas
+- **NUEVO:** Calcula y visualiza el balance neto (entradas - salidas)
+- **NUEVO:** Muestra la evolución temporal del balance total del sistema
 
 **API endpoints utilizados:**
 - `GET /api/v1/metamodelos/balance/zones` - Lista de zonas con balance hídrico
@@ -61,9 +64,14 @@ Genera gráficos de barras para el balance hídrico mensual de cada zona.
 python balance.py
 ```
 
-**Resultado:** 16 gráficos PNG (4 por cada una de las 4 zonas)
-- 3 gráficos individuales (entrada, salida, tasa)
-- 1 gráfico combinado con las 3 variables
+**Resultado:** 19 gráficos PNG
+- **Por zona (16 gráficos):** 4 zonas × 4 gráficos cada una
+  - 3 gráficos individuales (entrada, salida, tasa)
+  - 1 gráfico combinado con las 3 variables
+- **Comparativos (3 gráficos):**
+  - 1 comparación de componentes por zona (barras agrupadas)
+  - 1 balance neto por zona (barras con colores verde/rojo)
+  - 1 evolución del balance total del sistema (líneas temporales)
 
 ---
 
@@ -195,7 +203,12 @@ https://hydromet4api.hidrofuturo.cl/api/v1/
 
 Todos los gráficos se generan en formato PNG con alta resolución (300 DPI) y se guardan automáticamente en la carpeta `outputs/`.
 
-**Total de gráficos generados:** 35 imágenes
+**Total de gráficos generados:** 38 imágenes
+- 10 gráficos de niveles de agua (cota)
+- 19 gráficos de balance hídrico (incluye 3 comparativos)
+- 1 gráfico de distribución espacial de pozos
+- 4 gráficos de históricos de pozos
+- 4 gráficos de pronósticos de pozos
 
 ## ⚙️ Características Técnicas
 
@@ -219,6 +232,65 @@ Estos scripts son ejemplos de referencia. Puedes modificarlos para:
 - Ajustar colores y estilos de los gráficos
 - Modificar las dimensiones de las imágenes
 - Agregar más métricas o estadísticas
+
+---
+
+## 📊 Ejemplos de Gráficos Generados
+
+### Balance Hídrico - Gráficos Comparativos
+
+#### 1. Comparación de Componentes por Zona
+Barras agrupadas mostrando Step In (entradas), Step Out (salidas) y Step Rate (tasa) promedio para cada zona.
+
+![Comparación de Componentes por Zona](outputs/comparacion_componentes_zonas.png)
+
+#### 2. Balance Neto por Zona
+Balance neto promedio (entradas - salidas) con colores verde (positivo) y rojo (negativo).
+
+![Balance Neto por Zona](outputs/balance_neto_zonas.png)
+
+#### 3. Evolución del Balance Total del Sistema
+Serie temporal del balance total combinando datos históricos (MODFLOW) y pronósticos (Metamodelo).
+
+![Evolución del Balance Total](outputs/evolucion_balance_total.png)
+
+### Balance Hídrico - Gráfico Individual por Zona
+
+Ejemplo de gráfico combinado para una zona específica mostrando las tres variables del balance.
+
+![Balance Combinado Zona Norte](outputs/Zona_norte_balance_combinado.png)
+
+### Niveles de Agua (Head)
+
+#### Head Absoluto
+Evolución temporal del nivel absoluto del agua en una zona.
+
+![Head Absoluto Núcleo](outputs/Nucleo_head_absoluto.png)
+
+#### Head Delta
+Variación del nivel de agua respecto a un punto de referencia.
+
+![Head Delta Núcleo](outputs/Nucleo_head_delta.png)
+
+### Distribución Espacial de Pozos
+
+Mapa con la ubicación de todos los pozos de monitoreo clasificados por percentiles de nivel.
+
+![Distribución de Pozos](outputs/distribucion_pozos_percentiles.png)
+
+### Histórico de Pozos
+
+Serie temporal del nivel de agua en un pozo específico con estadísticas (promedio, máximo, mínimo).
+
+![Histórico Pozo 104](outputs/Pozo_104_E809_N774_historico.png)
+
+### Pronóstico de Pozos
+
+Pronóstico futuro de la variación del nivel de agua en un pozo específico.
+
+![Pronóstico Pozo 104](outputs/Pozo_104_E809_N774_pronostico.png)
+
+---
 
 ## 📧 Contacto
 
